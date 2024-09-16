@@ -1,0 +1,30 @@
+name: Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to run the tests against"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Run tests 
+        run: |
+            echo "Running tests against ${{ github.event.inputs.environment }}"
+            echo TEST_USER: '${TEST_USER}'
+        env:
+          TEST_USER: ${{ secrets.TEST_USER }}
+ 
+    
